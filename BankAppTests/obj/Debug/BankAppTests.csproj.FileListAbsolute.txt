@@ -1,0 +1,8 @@
+C:\Users\USER\Desktop\BankAppConsole\BankAppTests\bin\Debug\BankAppTests.dll
+C:\Users\USER\Desktop\BankAppConsole\BankAppTests\bin\Debug\BankAppTests.pdb
+C:\Users\USER\Desktop\BankAppConsole\BankAppTests\bin\Debug\BankAppConsole.exe
+C:\Users\USER\Desktop\BankAppConsole\BankAppTests\bin\Debug\BankAppConsole.pdb
+C:\Users\USER\Desktop\BankAppConsole\BankAppTests\obj\Debug\BankAppTests.csprojResolveAssemblyReference.cache
+C:\Users\USER\Desktop\BankAppConsole\BankAppTests\obj\Debug\BankAppTests.dll
+C:\Users\USER\Desktop\BankAppConsole\BankAppTests\obj\Debug\BankAppTests.pdb
+C:\Users\USER\Desktop\BankAppConsole\BankAppTests\bin\Debug\BankAppConsole.xml

@@ -1,0 +1,598 @@
+﻿<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>BankAppConsole</name>
+  </assembly>
+  <members>
+    <member name="T:BankAppConsole.Account">
+      <summary>
+            Contains properties of an account.
+            Contains methods for managing account transactions.
+            </summary>
+    </member>
+    <member name="F:BankAppConsole.Account._AccountBalance">
+      <summary>
+             _AccountBalance member variable
+            </summary>
+    </member>
+    <member name="F:BankAppConsole.Account._AccountName">
+      <summary>
+            _AccountName member variable
+            </summary>
+    </member>
+    <member name="F:BankAppConsole.Account._AccountNumber">
+      <summary>
+            _AccountNumber member variable
+            </summary>
+    </member>
+    <member name="M:BankAppConsole.Account.#ctor(System.String,System.String,System.Double)">
+      <summary>
+            Defines an Account
+            </summary>
+      <exception cref="T:System.ArgumentException"> Thrown when the initial account balance,
+            is set to a value less than the minimum account balance allowed.</exception>
+      <param name="accountBalance">Account Balance of a savings account</param>
+      <param name="accountName">Name identifying a savings Account</param>
+      <param name="accountNumber">Unique Number Identifying a savings account</param>
+    </member>
+    <member name="M:BankAppConsole.Account.makeDeposit(System.String,System.Double)">
+      <summary>
+            Account transaction. Deposits a specified amount into the account 
+            </summary>
+      <param name="amount">the amount to deposit</param>
+      <param name="Accountnumber">Number identifying account.</param>
+      <returns />
+    </member>
+    <member name="M:BankAppConsole.Account.makeWithdrawal(System.String,System.Double)">
+      <summary>
+            Account transaction. Withdraws a specified amount from the account and saves the changes in the database.
+            </summary>
+      <param name="Accountnumber">Number identifying account</param>
+      <param name="amount">the amount to withdraw</param>
+      <returns />
+    </member>
+    <member name="P:BankAppConsole.Account.AccountBalance">
+      <summary>
+            Gets or Sets the account balance
+            </summary>
+    </member>
+    <member name="P:BankAppConsole.Account.AccountName">
+      <summary>
+            Gets or Sets the name of an account
+            </summary>
+    </member>
+    <member name="P:BankAppConsole.Account.AccountNumber">
+      <summary>
+            Gets or Sets the account number
+            </summary>
+    </member>
+    <member name="T:BankAppConsole.BankPolicy">
+      <summary>
+            Defines the Bank Policies for some operations on savings and current accounts.
+            </summary>
+    </member>
+    <member name="F:BankAppConsole.BankPolicy.MinimumSavingsBalance">
+      <summary>
+            Variable defining the minimum savings balance
+            </summary>
+    </member>
+    <member name="F:BankAppConsole.BankPolicy.MinimumCurrentBalance">
+      <summary>
+            Variable defining the minimum current balance
+            </summary>
+    </member>
+    <member name="F:BankAppConsole.BankPolicy.minimumAge">
+      <summary>
+            Defines the minimum age to open an account
+            </summary>
+    </member>
+    <member name="P:BankAppConsole.BankPolicy.minimumsavingsBalance">
+      <summary>
+            gets or sets the minimum amount that can be in a savings account at any given time
+            </summary>
+    </member>
+    <member name="P:BankAppConsole.BankPolicy.minimumcurrentBalance">
+      <summary>
+            gets or sets the minimum amount that can be in a current account at any given time
+            </summary>
+    </member>
+    <member name="P:BankAppConsole.BankPolicy.MinimumAge">
+      <summary>
+            gets or sets the minimum age required to open an account type
+            </summary>
+    </member>
+    <member name="T:BankAppConsole.CurrentAccount">
+      <summary>
+            Current account.
+            Represents operations particular to only current accounts.
+            </summary>
+    </member>
+    <member name="M:BankAppConsole.CurrentAccount.#ctor(System.String,System.String,System.Double)">
+      <summary>
+            Defines a Current Account
+            Requires: The account balance never exceeds its minimum limit
+            </summary>
+      <exception cref="T:System.ArgumentException"> Thrown when the initial account balance,
+            is set to a value less than the minimum account balance allowed.</exception>
+      <param name="accountBalance">Account Balance of a current account</param>
+      <param name="accountName">Name identifying a current Account</param>
+      <param name="accountNumber">Unique Number Identifying a current account</param>
+      <requires exception="T:System.ArgumentException" csharp="accountBalance &gt;= minimumcurrentBalance" vb="accountBalance &gt;= minimumcurrentBalance">accountBalance &gt;= BankAppConsole.BankPolicy.minimumcurrentBalance</requires>
+      <exception cref="T:System.ArgumentException">accountBalance &lt; BankAppConsole.BankPolicy.minimumcurrentBalance</exception>
+    </member>
+    <member name="M:BankAppConsole.CurrentAccount.makeDeposit(System.String,System.Double)">
+      <summary>
+            Current Account transaction. Deposits a specified amount into the savings account and saves the changes in the database.
+            Requires: The amount to be deposited should not be negative
+            Requires: The account number is valid
+            </summary>
+      <param name="amount">the amount to deposit</param>
+      <param name="Accountnumber">Number identifying account.</param>
+      <exception cref="T:System.ArgumentException"> Thrown when a negative amount deposit is attempted or,
+            when the input account number is not same as 
+            the account number registered for the account.</exception>
+      <returns>The new account balance</returns>
+      <requires description="Invalid amount. Please check input" exception="T:System.ArgumentException" csharp="amount &gt; 0.0" vb="amount &gt; 0">amount &gt; 0.0</requires>
+      <exception cref="T:System.ArgumentException">amount &lt;= 0.0</exception>
+      <requires description="Invalid account number, check again" exception="T:System.ArgumentException" csharp="this.AccountNumber.Equals(Accountnumber)" vb="Me.AccountNumber.Equals(Accountnumber)">this.AccountNumber.Equals(Accountnumber)</requires>
+      <exception cref="T:System.ArgumentException">!this.AccountNumber.Equals(Accountnumber)</exception>
+      <ensures csharp="old(this.AccountBalance) &lt; this.AccountBalance" vb="old(Me.AccountBalance) &lt; Me.AccountBalance">old(this.AccountBalance) &lt; this.AccountBalance</ensures>
+      <ensures csharp="old(this.AccountBalance) + amount.Equals(this.AccountBalance)" vb="old(Me.AccountBalance) + amount.Equals(Me.AccountBalance)">old(this.AccountBalance) + amount.Equals(this.AccountBalance)</ensures>
+    </member>
+    <member name="M:BankAppConsole.CurrentAccount.makeWithdrawal(System.String,System.Double)">
+      <summary>
+            Current Account transaction. Withdraws a specified amount from the current account and saves the changes in the database.
+            Requires: The amount to be withdrawn should not be negative
+            Requires: The amount to be withdrawn should be less than or equal to the account balance
+            Requires: The account balance should be more than the minimum balance allowed for the bank
+            Requires: The account number is valid
+            </summary>
+      <param name="Accountnumber">Number identifying account</param>
+      <param name="amount">the amount to withdraw</param>
+      <exception cref="T:System.ArgumentException">Thrown when the account balance is not sufficient for the transaction or,
+            when the amount to withdraw is negative or, 
+            when the input account number is not same as 
+            the account number registered for the account.</exception>
+      <returns>The new account balance</returns>
+      <requires description="Invalid amount. Please check input" exception="T:System.ArgumentException" csharp="amount &gt; 0.0" vb="amount &gt; 0">amount &gt; 0.0</requires>
+      <exception cref="T:System.ArgumentException">amount &lt;= 0.0</exception>
+      <requires description="Cannot withdraw more than the available balance" exception="T:System.ArgumentException" csharp="amount &lt;= this.AccountBalance - minimumcurrentBalance" vb="amount &lt;= Me.AccountBalance - minimumcurrentBalance">amount &lt;= this.AccountBalance - BankAppConsole.BankPolicy.minimumcurrentBalance</requires>
+      <exception cref="T:System.ArgumentException">amount &gt; this.AccountBalance - BankAppConsole.BankPolicy.minimumcurrentBalance</exception>
+      <requires description="Account balance is Insufficient for this transaction" exception="T:System.ArgumentException" csharp="this.AccountBalance &gt;= minimumcurrentBalance" vb="Me.AccountBalance &gt;= minimumcurrentBalance">this.AccountBalance &gt;= BankAppConsole.BankPolicy.minimumcurrentBalance</requires>
+      <exception cref="T:System.ArgumentException">this.AccountBalance &lt; BankAppConsole.BankPolicy.minimumcurrentBalance</exception>
+      <requires description="Invalid account number, check again" exception="T:System.ArgumentException" csharp="this.AccountNumber.Equals(Accountnumber)" vb="Me.AccountNumber.Equals(Accountnumber)">this.AccountNumber.Equals(Accountnumber)</requires>
+      <exception cref="T:System.ArgumentException">!this.AccountNumber.Equals(Accountnumber)</exception>
+      <ensures csharp="this.AccountBalance &gt;= minimumcurrentBalance" vb="Me.AccountBalance &gt;= minimumcurrentBalance">this.AccountBalance &gt;= BankAppConsole.BankPolicy.minimumcurrentBalance</ensures>
+      <ensures csharp="old(this.AccountBalance) &gt; this.AccountBalance" vb="old(Me.AccountBalance) &gt; Me.AccountBalance">old(this.AccountBalance) &gt; this.AccountBalance</ensures>
+      <ensures csharp="old(this.AccountBalance) - amount.Equals(this.AccountBalance)" vb="old(Me.AccountBalance) - amount.Equals(Me.AccountBalance)">old(this.AccountBalance) - amount.Equals(this.AccountBalance)</ensures>
+    </member>
+    <member name="M:BankAppConsole.CurrentAccount.overdraftWithdraw(System.String,System.Double)">
+      <summary>
+            Account transaction for Current Account. 
+            Withdraws a specified amount from the account and saves the changes in the database.
+            Amount to be withdrawn will be more than the account balance.(Overdraft).
+            Requires: The amount to be withdrawn is more than the current account balance. 
+            Requires: The account number is valid.
+            Requires: The account balance value is positive.
+            </summary>
+      <param name="Accountnumber">Number identifying account</param>
+      <param name="amount">the amount to withdraw</param>
+      <exception cref="T:System.ArgumentException">Thrown when the amount to withdraw can be withdrawn without overdraft or,
+            when the input account number is not same as 
+            the account number registered for the account.</exception>
+      <returns>The new account balance</returns>
+      <requires description="You already owe the bank" exception="T:System.ArgumentException" csharp="this.AccountBalance &gt; 0.0" vb="Me.AccountBalance &gt; 0">this.AccountBalance &gt; 0.0</requires>
+      <exception cref="T:System.ArgumentException">this.AccountBalance &lt;= 0.0</exception>
+      <requires description="Cannot use overdraft. Withdraw the normal way" exception="T:System.ArgumentException" csharp="amount &gt; this.AccountBalance" vb="amount &gt; Me.AccountBalance">amount &gt; this.AccountBalance</requires>
+      <exception cref="T:System.ArgumentException">amount &lt;= this.AccountBalance</exception>
+      <requires description="Invalid account number, check again" exception="T:System.ArgumentException" csharp="this.AccountNumber.Equals(Accountnumber)" vb="Me.AccountNumber.Equals(Accountnumber)">this.AccountNumber.Equals(Accountnumber)</requires>
+      <exception cref="T:System.ArgumentException">!this.AccountNumber.Equals(Accountnumber)</exception>
+      <ensures csharp="old(this.AccountBalance) &gt; this.AccountBalance" vb="old(Me.AccountBalance) &gt; Me.AccountBalance">old(this.AccountBalance) &gt; this.AccountBalance</ensures>
+      <ensures csharp="old(this.AccountBalance) - amount.Equals(this.AccountBalance)" vb="old(Me.AccountBalance) - amount.Equals(Me.AccountBalance)">old(this.AccountBalance) - amount.Equals(this.AccountBalance)</ensures>
+      <ensures csharp="this.AccountBalance &lt; 0.0" vb="Me.AccountBalance &lt; 0">this.AccountBalance &lt; 0.0</ensures>
+    </member>
+    <member name="T:BankAppConsole.BankDatabaseEngine">
+      <summary>
+            Controls the banks database.
+            Can add a new account to the database and retrieve information from the database.
+            </summary>
+    </member>
+    <member name="T:BankAppConsole.Person">
+      <summary>
+            Represents a Person opening an account
+            </summary>
+    </member>
+    <member name="F:BankAppConsole.Person.PersonName">
+      <summary>
+            Defines name of the Customer
+            </summary>
+    </member>
+    <member name="F:BankAppConsole.Person.PersonGender">
+      <summary>
+            Defines the Gender of the Customer
+            </summary>
+    </member>
+    <member name="F:BankAppConsole.Person.birthday">
+      <summary>
+            DEfines the customers date of birth
+            </summary>
+    </member>
+    <member name="F:BankAppConsole.Person.PhoneNumber">
+      <summary>
+            Defines the Customers phone number
+            </summary>
+    </member>
+    <member name="F:BankAppConsole.Person.EmailAddress">
+      <summary>
+            Defines the email address for contacting customer
+            </summary>
+    </member>
+    <member name="F:BankAppConsole.Person.HouseAddress">
+      <summary>
+            Customer House Address
+            </summary>
+    </member>
+    <member name="P:BankAppConsole.Person.Birthday">
+      <summary>
+            Customer Birthday
+            </summary>
+    </member>
+    <member name="P:BankAppConsole.Person.Name">
+      <summary>
+            Gets or sets the name of Customer
+            </summary>
+    </member>
+    <member name="P:BankAppConsole.Person.gender">
+      <summary>
+            Gets or sets the Customers gender to Male or Female.
+            </summary>
+    </member>
+    <member name="P:BankAppConsole.Person.phonenumber">
+      <summary>
+            Gets or sets the Customers phonenumber
+            </summary>
+    </member>
+    <member name="P:BankAppConsole.Person.email_address">
+      <summary>
+            Gets or sets the Customers email-address
+            </summary>
+    </member>
+    <member name="P:BankAppConsole.Person.house_address">
+      <summary>
+            Gets or sets the Customers residential-address
+            </summary>
+    </member>
+    <member name="M:BankAppConsole.BankDatabaseEngine.SaveAccount(System.String,System.String,System.String,System.Double,System.String,System.String,System.String,System.DateTime,System.String,System.String)">
+      <summary>
+            Updates database by adding new account.
+            Requires: The email address is of a valid format.
+            </summary>
+      <param name="accountNumber">Customers Account Number</param>
+      <param name="accountType">Type of account customer opened</param>
+      <param name="accountName">Name of account</param>
+      <param name="accountBalance">Start amount in the new account</param>
+      <param name="customerName">Name of customer</param>
+      <param name="gender">Gender of customer</param>
+      <param name="phoneNumber">Phone number of customer</param>
+      <param name="dob">Birthday of customer</param>
+      <param name="dob">Customers birthday</param>
+      <param name="emailAddress">Email address of customer</param>
+      <param name="houseAddress">House address of customer</param>
+      <exception cref="T:System.FormatException">Thrown when users phone number or email are of the wrong format</exception>
+      <requires description="Not an email address, please check input" exception="T:System.FormatException" csharp="checkEmailValidity(emailAddress).Equals(true)" vb="checkEmailValidity(emailAddress).Equals(True)">BankAppConsole.BankDatabaseEngine.checkEmailValidity(emailAddress).Equals(true)</requires>
+      <exception cref="T:System.FormatException">!BankAppConsole.BankDatabaseEngine.checkEmailValidity(emailAddress).Equals(true)</exception>
+      <requires description="Please check that the phone number is correct" exception="T:System.FormatException" csharp="checkPhoneNumberValidity(phoneNumber).Equals(true)" vb="checkPhoneNumberValidity(phoneNumber).Equals(True)">BankAppConsole.BankDatabaseEngine.checkPhoneNumberValidity(phoneNumber).Equals(true)</requires>
+      <exception cref="T:System.FormatException">!BankAppConsole.BankDatabaseEngine.checkPhoneNumberValidity(phoneNumber).Equals(true)</exception>
+    </member>
+    <member name="M:BankAppConsole.BankDatabaseEngine.GetAccountBalance(System.String)">
+      <summary>
+            Finds the account balance corresponding to the account number and returns.
+            Requires: The account exists in the database.
+            </summary>
+      <param name="accountNumber">The account number to search</param>
+      <exception cref="T:System.ArgumentException">Thrown when the account number does not exist in the database.</exception>
+      <returns>The Account Balance</returns>
+      <requires description="Account does not exist." exception="T:System.ArgumentException" csharp="AccountExists(accountNumber)" vb="AccountExists(accountNumber)">BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</requires>
+      <exception cref="T:System.ArgumentException">!BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</exception>
+    </member>
+    <member name="M:BankAppConsole.BankDatabaseEngine.GetAccountType(System.String)">
+      <summary>
+            Finds the account type corresponding to the specified account number.
+            Account Type is current or savings.
+            Requires: The account exists in the database.
+            </summary>
+      <param name="accountNumber">The account number to search</param>
+      <exception cref="T:System.ArgumentException">Thrown when the account number does not exist in the database.</exception>
+      <returns>The account type</returns>
+      <requires description="Account does not exist." exception="T:System.ArgumentException" csharp="AccountExists(accountNumber)" vb="AccountExists(accountNumber)">BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</requires>
+      <exception cref="T:System.ArgumentException">!BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</exception>
+    </member>
+    <member name="M:BankAppConsole.BankDatabaseEngine.GetAccountName(System.String)">
+      <summary>
+            Finds the account name corresponding to the specified account number.
+            Requires: The account exists in the database.
+            </summary>
+      <param name="accountNumber">The account number to search</param>
+      <exception cref="T:System.ArgumentException">Thrown when the account number does not exist in the database.</exception>
+      <returns>The account name</returns>
+      <requires description="Account does not exist." exception="T:System.ArgumentException" csharp="AccountExists(accountNumber)" vb="AccountExists(accountNumber)">BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</requires>
+      <exception cref="T:System.ArgumentException">!BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</exception>
+    </member>
+    <member name="M:BankAppConsole.BankDatabaseEngine.CreditAccount(System.String,System.Double)">
+      <summary>
+            Updates the account in the database,
+            by crediting the account corresponding to the specific account number in the database with the amount specified.
+            Requires: The account exists in the database.
+            </summary>
+      <exception cref="T:System.ArgumentException">Thrown when the account number does not exist in the database.</exception>
+      <param name="accountNumber">account number corresponding to the account to be credited.</param>
+      <param name="creditAmount">amount to deposit.</param>
+      <requires description="Account does not exist." exception="T:System.ArgumentException" csharp="AccountExists(accountNumber)" vb="AccountExists(accountNumber)">BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</requires>
+      <exception cref="T:System.ArgumentException">!BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</exception>
+    </member>
+    <member name="M:BankAppConsole.BankDatabaseEngine.DebitAccount(System.String,System.Double)">
+      <summary>
+            Updates the account in the database,
+            by debitting the account corresponding to the specific account number in the database with the amount specified.
+            Requires: The account exists in the database.
+            </summary>
+      <exception cref="T:System.ArgumentException">Thrown when the account number does not exist in the database.</exception>
+      <param name="accountNumber">account number corresponding to the account to be debitted.</param>
+      <param name="debitAmount">amount to withdraw</param>
+      <requires description="Account does not exist." exception="T:System.ArgumentException" csharp="AccountExists(accountNumber)" vb="AccountExists(accountNumber)">BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</requires>
+      <exception cref="T:System.ArgumentException">!BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</exception>
+    </member>
+    <member name="M:BankAppConsole.BankDatabaseEngine.GetCustomerInfo(System.String)">
+      <summary>
+            Gets information about the customer owning the account with the specified account number.
+            Requires: The account exists in the database.
+            </summary>
+      <param name="accountNumber">account number corresponding to the account of the customer.</param>
+      <exception cref="T:System.ArgumentException">Thrown when the account number does not exist in the database.</exception>
+      <returns>The Persons information.</returns>
+      <requires description="Account does not exist." exception="T:System.ArgumentException" csharp="AccountExists(accountNumber)" vb="AccountExists(accountNumber)">BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</requires>
+      <exception cref="T:System.ArgumentException">!BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</exception>
+    </member>
+    <member name="M:BankAppConsole.BankDatabaseEngine.AccountExists(System.String)">
+      <summary>
+            Uses the account number to check if a given account exists.
+            An account exists when the account number is found in the database.
+            </summary>
+      <param name="accountNumber">the account number to search</param>
+      <returns>"true" if account exists, false if not.</returns>
+    </member>
+    <member name="M:BankAppConsole.BankDatabaseEngine.IsEmailValid(System.String)">
+      <summary>
+            Uses Regular Expressions to check if email address is of the correct format
+            </summary>
+      <param name="email">email to check</param>
+      <returns />
+    </member>
+    <member name="M:BankAppConsole.BankDatabaseEngine.checkEmailValidity(System.String)">
+      <summary>
+            Uses Regular Expressions to check if email address is of the correct format
+            </summary>
+      <param name="email">email to check</param>
+      <returns />
+    </member>
+    <member name="M:BankAppConsole.BankDatabaseEngine.IsPhoneNumberValid(System.String)">
+      <summary>
+            Uses Regular Expressions to check if phone number is of the correct format
+            </summary>
+      <param name="phonenumber">number to check</param>
+      <returns />
+    </member>
+    <member name="M:BankAppConsole.BankDatabaseEngine.checkPhoneNumberValidity(System.String)">
+      <summary>
+            Uses Regular Expressions to check if phone number is of the correct format
+            </summary>
+      <param name="phonenumber">number to check</param>
+      <returns />
+    </member>
+    <member name="T:BankAppConsole.Gender">
+      <summary>
+            Possible genders of a person. (male or female).
+            </summary>
+    </member>
+    <member name="F:BankAppConsole.Gender.Male">
+      <summary> The male gender </summary>
+    </member>
+    <member name="F:BankAppConsole.Gender.Female">
+      <summary> The female gender </summary>
+    </member>
+    <member name="T:BankAppConsole.Program">
+      <summary>
+            Main entry point of the application.
+            </summary>
+    </member>
+    <member name="M:BankAppConsole.Program.Main(System.String[])">
+      <summary>
+            Program entry point
+            </summary>
+      <param name="args" />
+    </member>
+    <member name="M:BankAppConsole.Program.BankOperations">
+      <summary>
+            Operations this banking application can perform.
+            Create Account, Deposit, Withdraw, View and OverdraftWithdraw
+            </summary>
+    </member>
+    <member name="T:BankAppConsole.SavingsAccount">
+      <summary>
+            Savings account.
+            Represents operations particular to only savings accounts
+            </summary>
+    </member>
+    <member name="M:BankAppConsole.SavingsAccount.#ctor(System.String,System.String,System.Double)">
+      <summary>
+            Defines a Savings Account
+            Requires: The account balance never exceeds its minimum limit
+            </summary>
+      <exception cref="T:System.ArgumentException"> Thrown when the initial account balance,
+            is set to a value less than the minimum account balance allowed.</exception>
+      <param name="accountBalance">Account Balance of a savings account</param>
+      <param name="accountName">Name identifying a savings Account</param>
+      <param name="accountNumber">Unique Number Identifying a savings account</param>
+      <requires exception="T:System.ArgumentException" csharp="accountBalance &gt;= minimumsavingsBalance" vb="accountBalance &gt;= minimumsavingsBalance">accountBalance &gt;= BankAppConsole.BankPolicy.minimumsavingsBalance</requires>
+      <exception cref="T:System.ArgumentException">accountBalance &lt; BankAppConsole.BankPolicy.minimumsavingsBalance</exception>
+    </member>
+    <member name="M:BankAppConsole.SavingsAccount.makeDeposit(System.String,System.Double)">
+      <summary>
+            Account transaction. Deposits a specified amount into the account and saves the changes in the database.
+            Requires: The amount to be deposited should not be negative
+            Requires: The account number is valid
+            </summary>
+      <param name="amount">the amount to deposit</param>
+      <param name="Accountnumber">Number identifying account.</param>
+      <exception cref="T:System.ArgumentException"> Thrown when a negative amount deposit is attempted or,
+            when the input account number is not same as 
+            the account number registered for the account.</exception>
+      <returns>The new account balance</returns>
+      <requires description="Invalid amount. Please check input" exception="T:System.ArgumentException" csharp="amount &gt; 0.0" vb="amount &gt; 0">amount &gt; 0.0</requires>
+      <exception cref="T:System.ArgumentException">amount &lt;= 0.0</exception>
+      <requires description="Invalid account number, check again" exception="T:System.ArgumentException" csharp="this.AccountNumber.Equals(Accountnumber)" vb="Me.AccountNumber.Equals(Accountnumber)">this.AccountNumber.Equals(Accountnumber)</requires>
+      <exception cref="T:System.ArgumentException">!this.AccountNumber.Equals(Accountnumber)</exception>
+      <ensures csharp="old(this.AccountBalance) &lt; this.AccountBalance" vb="old(Me.AccountBalance) &lt; Me.AccountBalance">old(this.AccountBalance) &lt; this.AccountBalance</ensures>
+      <ensures csharp="old(this.AccountBalance) + amount.Equals(this.AccountBalance)" vb="old(Me.AccountBalance) + amount.Equals(Me.AccountBalance)">old(this.AccountBalance) + amount.Equals(this.AccountBalance)</ensures>
+    </member>
+    <member name="M:BankAppConsole.SavingsAccount.makeWithdrawal(System.String,System.Double)">
+      <summary>
+            Account transaction. Withdraws a specified amount from the savings account and saves the changes in the database.
+            Requires: The amount to be withdrawn should not be negative
+            Requires: The amount to be withdrawn should be less than or equal to the account balance
+            Requires: The account balance should be more than the minimum balance allowed for the bank
+            Requires: The account number is valid
+            </summary>
+      <param name="Accountnumber">Number identifying account</param>
+      <param name="amount">the amount to withdraw</param>
+      <exception cref="T:System.ArgumentException">Thrown when the account balance is not sufficient for the transaction or,
+            when the amount to withdraw is negative or, 
+            when the input account number is not same as 
+            the account number registered for the account.</exception>
+      <returns>The new account balance</returns>
+      <requires description="Invalid amount. Please check input" exception="T:System.ArgumentException" csharp="amount &gt; 0.0" vb="amount &gt; 0">amount &gt; 0.0</requires>
+      <exception cref="T:System.ArgumentException">amount &lt;= 0.0</exception>
+      <requires description="Cannot withdraw more than the available balance" exception="T:System.ArgumentException" csharp="amount &lt;= this.AccountBalance - minimumsavingsBalance" vb="amount &lt;= Me.AccountBalance - minimumsavingsBalance">amount &lt;= this.AccountBalance - BankAppConsole.BankPolicy.minimumsavingsBalance</requires>
+      <exception cref="T:System.ArgumentException">amount &gt; this.AccountBalance - BankAppConsole.BankPolicy.minimumsavingsBalance</exception>
+      <requires description="Account balance is Insufficient for this transaction" exception="T:System.ArgumentException" csharp="this.AccountBalance &gt;= minimumsavingsBalance" vb="Me.AccountBalance &gt;= minimumsavingsBalance">this.AccountBalance &gt;= BankAppConsole.BankPolicy.minimumsavingsBalance</requires>
+      <exception cref="T:System.ArgumentException">this.AccountBalance &lt; BankAppConsole.BankPolicy.minimumsavingsBalance</exception>
+      <requires description="Invalid account number, check again" exception="T:System.ArgumentException" csharp="this.AccountNumber.Equals(Accountnumber)" vb="Me.AccountNumber.Equals(Accountnumber)">this.AccountNumber.Equals(Accountnumber)</requires>
+      <exception cref="T:System.ArgumentException">!this.AccountNumber.Equals(Accountnumber)</exception>
+      <ensures csharp="this.AccountBalance &gt;= minimumsavingsBalance" vb="Me.AccountBalance &gt;= minimumsavingsBalance">this.AccountBalance &gt;= BankAppConsole.BankPolicy.minimumsavingsBalance</ensures>
+      <ensures csharp="old(this.AccountBalance) &gt; this.AccountBalance" vb="old(Me.AccountBalance) &gt; Me.AccountBalance">old(this.AccountBalance) &gt; this.AccountBalance</ensures>
+      <ensures csharp="old(this.AccountBalance) - amount.Equals(this.AccountBalance)" vb="old(Me.AccountBalance) - amount.Equals(Me.AccountBalance)">old(this.AccountBalance) - amount.Equals(this.AccountBalance)</ensures>
+    </member>
+    <member name="T:BankAppConsole.Teller">
+      <summary>
+            Contains methods defining transactions a teller can perform on an existing account.
+            Teller can also open new account for a customer.
+            </summary>
+    </member>
+    <member name="M:BankAppConsole.Teller.CreateAccount">
+      <summary>
+            Creates a new account for a customer and saves the account details to the database.
+            Requires: The Banks Policy conditions for minimum age to be eligible to open current and savings accounts are set.
+            Requires: The Banks Policy conditions for minimum amount to be eligible to open current and savings accounts are set.
+            </summary>
+      <exception cref="T:System.IO.InvalidDataException">Thrown when user enters wrong account type or gender</exception>
+      <exception cref="T:System.InvalidOperationException">Thrown when the customer is not eligible to open any account</exception>
+      <exception cref="T:System.FormatException">Thrown when user input is of the wrong format</exception>
+      <requires csharp="MinimumAge &gt; 0" vb="MinimumAge &gt; 0">BankAppConsole.BankPolicy.MinimumAge &gt; 0</requires>
+      <requires csharp="minimumcurrentBalance &gt; 0.0 || minimumsavingsBalance &gt;= 0.0" vb="minimumcurrentBalance &gt; 0 OrElse minimumsavingsBalance &gt;= 0">BankAppConsole.BankPolicy.minimumcurrentBalance &gt; 0.0 || BankAppConsole.BankPolicy.minimumsavingsBalance &gt;= 0.0</requires>
+    </member>
+    <member name="M:BankAppConsole.Teller.MakeDeposit(System.String,System.Double)">
+      <summary>
+            Allows the Teller credit a certain account by entering the account number and the amount to be deposited.
+            Requires: The account number is currently in the banks database.
+            Requires: The amount to be deposited is not negative.
+            </summary>
+      <param name="accountNumber">The account number identifying the account to be deposited to.</param>
+      <param name="creditAmount">Amount to be deposited.</param>
+      <exception cref="T:System.IO.InvalidDataException">Thrown when the account number does not exist in the database</exception>
+      <exception cref="T:System.ArgumentException">Thrown when the Amount to be deposited is negative.</exception>
+      <requires description="Please check input. Account Number does not exist" exception="T:System.IO.InvalidDataException" csharp="AccountExists(accountNumber)" vb="AccountExists(accountNumber)">BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</requires>
+      <exception cref="T:System.IO.InvalidDataException">!BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</exception>
+      <requires description="Cannot deposit a negative balance" exception="T:System.ArgumentException" csharp="creditAmount &gt; 0.0" vb="creditAmount &gt; 0">creditAmount &gt; 0.0</requires>
+      <exception cref="T:System.ArgumentException">creditAmount &lt;= 0.0</exception>
+    </member>
+    <member name="M:BankAppConsole.Teller.MakeWithdrawal(System.String,System.Double)">
+      <summary>
+            Allows the Teller debit a certain account by entering the account number and the amount to be withdrawn.
+            Requires: The account number is currently in the banks database.
+            Requires: The amount to be withdrawn is not negative.
+            Requires: The amount to be withdrawn is not greater than the present account balance.
+            </summary>
+      <param name="accountNumber">The account number identifying the account to withdraw from.</param>
+      <param name="debitAmount">Amount to be withdrawn.</param>
+      <exception cref="T:System.IO.InvalidDataException">Thrown when the account number does not exist in the database</exception>
+      <exception cref="T:System.ArgumentException">Thrown when the Amount to be withdrawn is negative,
+            Thrown when the debit amount is greater than the present account balance.
+            </exception>
+      <requires description="Please check input. Account Number does not exist" exception="T:System.IO.InvalidDataException" csharp="AccountExists(accountNumber)" vb="AccountExists(accountNumber)">BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</requires>
+      <exception cref="T:System.IO.InvalidDataException">!BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</exception>
+      <requires description="Cannot withdraw a negative balance" exception="T:System.ArgumentException" csharp="debitAmount &gt; 0.0" vb="debitAmount &gt; 0">debitAmount &gt; 0.0</requires>
+      <exception cref="T:System.ArgumentException">debitAmount &lt;= 0.0</exception>
+      <requires description="Cannot withdraw more than what you have, try using the overdraft" exception="T:System.ArgumentException" csharp="GetAccountBalance(accountNumber) &gt;= debitAmount" vb="GetAccountBalance(accountNumber) &gt;= debitAmount">BankAppConsole.BankDatabaseEngine.GetAccountBalance(accountNumber) &gt;= debitAmount</requires>
+      <exception cref="T:System.ArgumentException">BankAppConsole.BankDatabaseEngine.GetAccountBalance(accountNumber) &lt; debitAmount</exception>
+    </member>
+    <member name="M:BankAppConsole.Teller.MakeOverdraftWithdrawal(System.String,System.Double)">
+      <summary>
+            Allows the Teller debit a certain account by entering the account number and the amount to be withdrawn.
+            Requires: The account number is currently in the banks database.
+            Requires: The amount to be withdrawn is not negative.
+            Requires: The account is a current account.
+            Requires: The amount to be withdrawn is greater than the present amount.
+            Requires: The account balance value is positive.
+            </summary>
+      <param name="accountNumber">The account number identifying the account to withdraw from.</param>
+      <param name="debitAmount">Amount to be withdrawn</param>
+      <exception cref="T:System.IO.InvalidDataException">Thrown when the account number does not exist in the database</exception>
+      <exception cref="T:System.InvalidOperationException">Thrown when the account is not a current account.</exception>
+      <exception cref="T:System.ArgumentException">Thrown when the Amount to be withdrawn is negative,
+            Thrown when the debit amount is less than the present account balance,
+            Thrown when the account balance is less than zero.
+            </exception>
+      <requires description="You already owe the bank" exception="T:System.ArgumentException" csharp="GetAccountBalance(accountNumber) &gt; 0.0" vb="GetAccountBalance(accountNumber) &gt; 0">BankAppConsole.BankDatabaseEngine.GetAccountBalance(accountNumber) &gt; 0.0</requires>
+      <exception cref="T:System.ArgumentException">BankAppConsole.BankDatabaseEngine.GetAccountBalance(accountNumber) &lt;= 0.0</exception>
+      <requires description="Please check input. Account Number does not exist" exception="T:System.IO.InvalidDataException" csharp="AccountExists(accountNumber)" vb="AccountExists(accountNumber)">BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</requires>
+      <exception cref="T:System.IO.InvalidDataException">!BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</exception>
+      <requires description="Transaction valid for current accounts only." exception="T:System.InvalidOperationException" csharp="GetAccountType(accountNumber).ToLower().Equals(&quot;current&quot;)" vb="GetAccountType(accountNumber).ToLower().Equals(&quot;current&quot;)">BankAppConsole.BankDatabaseEngine.GetAccountType(accountNumber).ToLower().Equals("current")</requires>
+      <exception cref="T:System.InvalidOperationException">!BankAppConsole.BankDatabaseEngine.GetAccountType(accountNumber).ToLower().Equals("current")</exception>
+      <requires description="Can withdraw normally, no need for overdraft" exception="T:System.ArgumentException" csharp="GetAccountBalance(accountNumber) &lt; debitAmount" vb="GetAccountBalance(accountNumber) &lt; debitAmount">BankAppConsole.BankDatabaseEngine.GetAccountBalance(accountNumber) &lt; debitAmount</requires>
+      <exception cref="T:System.ArgumentException">BankAppConsole.BankDatabaseEngine.GetAccountBalance(accountNumber) &gt;= debitAmount</exception>
+      <requires description="Cannot withdraw a negative balance" exception="T:System.ArgumentException" csharp="debitAmount &gt; 0.0" vb="debitAmount &gt; 0">debitAmount &gt; 0.0</requires>
+      <exception cref="T:System.ArgumentException">debitAmount &lt;= 0.0</exception>
+    </member>
+    <member name="M:BankAppConsole.Teller.ViewAccountInfo(System.String)">
+      <summary>
+            Displays the Account name, Account type, Account number and account balance for a particular account.
+            Requires: The account number exists in the banks database.
+            </summary>
+      <param name="accountNumber">Unique number identifying the account.</param>
+      <exception cref="T:System.IO.InvalidDataException">Thrown when the account number does not exist in the banks database</exception>
+      <requires description="Please check input. Account Number does not exist" exception="T:System.IO.InvalidDataException" csharp="AccountExists(accountNumber)" vb="AccountExists(accountNumber)">BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</requires>
+      <exception cref="T:System.IO.InvalidDataException">!BankAppConsole.BankDatabaseEngine.AccountExists(accountNumber)</exception>
+    </member>
+    <member name="M:BankAppConsole.Teller.getBalance(System.Double)">
+      <summary>
+            Computes the account balance in currency format.
+            Current accounts can have negative balances due to overdraft.
+            ($ ###,###) indicates the amount a customer owes a bank if (s)he withdrew using overdraft.
+            </summary>
+      <param name="AccountBalance">Account balance</param>
+      <returns>Account balance of a</returns>
+    </member>
+    <member name="T:BankAppConsole.AccountNumberGenerator">
+      <summary>
+            Contains a method used to generate account numbers for customers
+            </summary>
+    </member>
+    <member name="M:BankAppConsole.AccountNumberGenerator.GenerateUniqueString(System.Int32)">
+      <summary>
+            Uses the crypto random number generator to generate unique strings of a specified length
+            </summary>
+      <param name="length">The length of the string to be generated</param>
+      <returns>The generated string</returns>
+    </member>
+  </members>
+</doc>
