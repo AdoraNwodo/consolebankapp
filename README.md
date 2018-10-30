@@ -5,6 +5,6 @@ In this Application, Users can open accounts and manage their account details. t
 
 The database used in the code is the MS Access DB (2013). 
 
-The application was written in C# with visual studio 2013. 
+The application was written in C# with visual studio 2013 to highlight basic OOP concepts. 
 
 Hope this helps someone.
